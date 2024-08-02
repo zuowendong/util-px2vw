@@ -13,6 +13,7 @@
           type="text"
           class="grow"
           placeholder="设计稿宽度"
+          @keyup.enter="handleChangeScreen"
         />
         <span class="badge badge-info">px</span>
       </label>
@@ -63,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useClipboard } from "@vueuse/core";
 
 const resultRef = ref();
@@ -75,12 +76,18 @@ const handleCopy = () => {
   isCopy.value = true;
 };
 
-const defaultScreenWidth = ref(375);
+const defaultScreenWidth = ref(0);
+
+onMounted(() => {
+  const value = localStorage.getItem("defaultScreenWidth");
+  defaultScreenWidth.value = Number(value || 375);
+});
+
 const targetPXValue = ref("");
 const resultVal = ref("");
 
 const historyMap = ref(new Map());
-const historyList = ref([]);
+const historyList = ref<any>([]);
 
 function handleSubmit() {
   const val1 = Number(targetPXValue.value);
@@ -95,6 +102,10 @@ function handleSubmit() {
 
   historyMap.value.set(targetPXValue.value, resultVal.value);
   historyList.value = Array.from(historyMap.value);
+}
+
+function handleChangeScreen() {
+  localStorage.setItem("defaultScreenWidth", String(defaultScreenWidth.value));
 }
 </script>
 
