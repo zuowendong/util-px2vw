@@ -93,12 +93,8 @@ function handleSubmit() {
   const val1 = Number(targetPXValue.value);
   const val2 = Number(defaultScreenWidth.value);
 
-  if (val1 > val2) {
-    resultVal.value = `${val1}PX`;
-  } else {
-    const res = (val1 / val2) * 100;
-    resultVal.value = `${res.toFixed(2)}vw`;
-  }
+  const res = (val1 / val2) * 100;
+  resultVal.value = `${res.toFixed(2)}vw`;
 
   historyMap.value.set(targetPXValue.value, resultVal.value);
   historyList.value = Array.from(historyMap.value);
